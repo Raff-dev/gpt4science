@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "gpt4science"
+version = "0.1.0"
+description = ""
+authors = ["Rafał Łazicki <rafal.lazicki99@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+openai = "^1.8.0"
+langchain = "^0.1.1"
+langchain-openai = "^0.0.3"
+langchain-community = "^0.0.13"
+langchain-core = "^0.1.13"
+python-dotenv = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pylint.messages_control]
+good-names = ["i", "j", "k", "_", "id", "up"]
+disable = [
+    "consider-using-generator",
+    "fixme",
+    "missing-docstring",
+    "missing-function-docstring",
+    "too-few-public-methods",
+    "redefined-builtin",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.isort]
+profile = "black"
+src_paths = ["gpt4science"]
+
+[tool.autoflake]
+remove_all_unused_imports = true
+remove_unused_variables = true
+remove_unused_variables_ignore = ["__init__.py"]
+remove_duplicate_keys = true
