@@ -6,10 +6,10 @@ topic: {topic}
 context: {context}
 """
 
-PAPER_STRUCTURE_PROMPT = """
+TABLE_OF_CONTENTS_PROMPT = """
 You're a research scientist.
 Based on the topic, context, and paper title, your job is to come up with chapters and subchapters as a general structure in the form of a table of contents.
-Use initialize_structure to create the paper structure.
+Use tools available to create the table of contents.
 """
 
 RELEVANCE_CATEGORIES = ["irrelevant", "somewhat relevant", "relevant", "very relevant"]
