@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from langchain.agents import AgentExecutor, OpenAIFunctionsAgent
+from langchain.agents import AgentExecutor, create_openai_functions_agent
 from langchain.chains import LLMChain, SequentialChain
 from langchain_openai.chat_models import ChatOpenAI
 
@@ -20,7 +20,7 @@ def main():
     )
 
     tools = [initialize_structure_tool]
-    agent = OpenAIFunctionsAgent(
+    agent = create_openai_functions_agent(
         llm=llm, tools=tools, prompt=initialize_structure_prompt
     )
     structure_executor_chain = AgentExecutor(agent=agent, verbose=True, tools=tools)
@@ -28,7 +28,7 @@ def main():
     chain = SequentialChain(
         chains=[title_chain, structure_executor_chain],
         input_variables=["topic", "context"],
-        output_variables=["title", "chapters"],
+        verbose=True,
     )
 
     chain(

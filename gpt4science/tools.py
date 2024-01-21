@@ -1,21 +1,18 @@
 from __future__ import annotations
 
-import os
 import pprint
 
-from dotenv import load_dotenv
-from langchain.tools import StructuredTool
-from pydantic import BaseModel
-
-load_dotenv()
+from langchain.tools import Tool
+from pydantic.v1 import BaseModel
 
 
-SERP_API_KEY = os.getenv("SERP_API_KEY")
+class SubSection(BaseModel):
+    title: str
 
 
 class Chapter(BaseModel):
     title: str
-    chapters: list[Chapter] | None = None
+    SubSection: list[SubSection]
 
 
 class PaperStructure(BaseModel):
@@ -25,13 +22,17 @@ class PaperStructure(BaseModel):
     chapters: list[Chapter]
 
 
+class InitializeStructureArgs(BaseModel):
+    paper_structure: PaperStructure
+
+
 def initialize_structure(paper_structure: PaperStructure) -> None:
-    pprint.pprint(paper_structure.model_dump())
+    pprint.pprint(paper_structure.json(), indent=4)
 
 
-initialize_structure_tool = StructuredTool.from_function(
+initialize_structure_tool = Tool.from_function(
     name="initialize_structure",
     description="Given topic, context, and paper title, create a paper structure.",
     func=initialize_structure,
-    input_schema=PaperStructure,
+    args_schema=InitializeStructureArgs,
 )

@@ -8,12 +8,8 @@ context: {context}
 
 PAPER_STRUCTURE_PROMPT = """
 You're a research scientist.
-Based on the topic, context, and paper title, your job is to come up with chapters and a general structure in the form of a table of contents.
+Based on the topic, context, and paper title, your job is to come up with chapters and subchapters as a general structure in the form of a table of contents.
 Use initialize_structure to create the paper structure.
-
-topic: {topic}
-context: {context}
-title: {title}
 """
 
 RELEVANCE_CATEGORIES = ["irrelevant", "somewhat relevant", "relevant", "very relevant"]
@@ -54,4 +50,9 @@ Given the chapter title of a research paper, you need to estimate the relevance 
 
 IMAGE_RELEVANCE_PROMPT = """
 Find images. Function call to image ask and find relevance.
+"""
+
+
+REFERENCE_SEARCH_PROMPT = """
+Given a paragraph of text, describe a question that it answers.
 """

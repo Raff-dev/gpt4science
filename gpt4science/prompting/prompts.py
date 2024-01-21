@@ -1,4 +1,10 @@
-from langchain.prompts import PromptTemplate
+from langchain.prompts import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    MessagesPlaceholder,
+    PromptTemplate,
+)
+from langchain.schema import SystemMessage
 
 from gpt4science.prompting.templates import (
     PAPER_STRUCTURE_PROMPT,
@@ -10,7 +16,17 @@ research_paper_title_prompt = PromptTemplate(
     input_variables=["topic", "context"],
 )
 
-initialize_structure_prompt = PromptTemplate(
+initialize_structure_prompt = ChatPromptTemplate(
+    messages=[
+        SystemMessage(content=PAPER_STRUCTURE_PROMPT),
+        HumanMessagePromptTemplate.from_template(
+            """
+            Topic: {topic}
+            Context: {context}
+            Title: {title}
+            """
+        ),
+        MessagesPlaceholder(variable_name="agent_scratchpad"),
+    ],
     template=PAPER_STRUCTURE_PROMPT,
-    input_variables=["topic", "context", "title"],
 )
