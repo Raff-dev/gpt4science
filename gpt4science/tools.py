@@ -15,7 +15,7 @@ class Chapter(BaseModel):
     SubSection: list[SubSection]
 
 
-class PaperStructure(BaseModel):
+class TableOfContents(BaseModel):
     topic: str
     context: str
     title: str
@@ -23,16 +23,16 @@ class PaperStructure(BaseModel):
 
 
 class InitializeStructureArgs(BaseModel):
-    paper_structure: PaperStructure
+    paper_structure: TableOfContents
 
 
-def initialize_structure(paper_structure: PaperStructure) -> None:
-    pprint.pprint(paper_structure.json(), indent=4)
+def create_table_of_contents(table_of_contents: TableOfContents) -> None:
+    pprint.pprint(table_of_contents.json(), indent=4)
 
 
 initialize_structure_tool = Tool.from_function(
-    name="initialize_structure",
-    description="Given topic, context, and paper title, create a paper structure.",
-    func=initialize_structure,
+    name="create_table_of_contents",
+    description="Given topic, context, and paper title, create table of contents.",
+    func=create_table_of_contents,
     args_schema=InitializeStructureArgs,
 )
