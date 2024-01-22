@@ -1,10 +1,7 @@
 from __future__ import annotations
 
-from operator import itemgetter
-
 from langchain.agents import AgentExecutor, create_openai_functions_agent
 from langchain.chains import LLMChain, SequentialChain
-from langchain.schema import StrOutputParser
 from langchain_openai.chat_models import ChatOpenAI
 
 from gpt4science.prompting.prompts import (
@@ -24,43 +21,17 @@ def main():
     )
     structure_executor_chain = AgentExecutor(agent=agent, verbose=True, tools=tools)
 
-    # title_chain = LLMChain(
-    #     llm=llm, prompt=research_paper_title_prompt, output_key="title"
-    # )
-    # chain = SequentialChain(
-    #     chains=[title_chain, structure_executor_chain],
-    #     input_variables=["topic", "context"],
-    #     verbose=True,
-    # )
-    # chain(
-    #     {
-    #         "topic": "quantum computing",
-    #         "context": (
-    #             "Quantum computing is a field that applies the laws of quantum "
-    #             "mechanics to computational ability."
-    #         ),
-    #     }
-    # )
-
-    title_chain = (
-        {"topic": itemgetter("topic"), "context": itemgetter("context")}
-        | llm
-        | research_paper_title_prompt
-        | StrOutputParser()
+    title_chain = LLMChain(
+        llm=llm, prompt=research_paper_title_prompt, output_key="title"
     )
 
-    chain = (
-        {
-            "topic": itemgetter("topic"),
-            "context": itemgetter("context"),
-            "title": title_chain,
-        }
-        | agent
-        | structure_executor_chain
-        | StrOutputParser()
+    chain = SequentialChain(
+        chains=[title_chain, structure_executor_chain],
+        input_variables=["topic", "context"],
+        verbose=True,
     )
 
-    chain.invoke(
+    chain(
         {
             "topic": "quantum computing",
             "context": (
