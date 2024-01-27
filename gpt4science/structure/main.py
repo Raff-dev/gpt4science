@@ -4,12 +4,12 @@ from langchain.agents import AgentExecutor, create_openai_functions_agent
 from langchain.chains import LLMChain, SequentialChain
 from langchain_openai.chat_models import ChatOpenAI
 
-from gpt4science.prompting.prompts import (
+from gpt4science.settings import GPT4_TURBO, OPENAI_API_KEY
+from gpt4science.structure.prompts import (
     initialize_structure_prompt,
     research_paper_title_prompt,
 )
-from gpt4science.settings import GPT4_TURBO, OPENAI_API_KEY
-from gpt4science.tools import initialize_structure_tool
+from gpt4science.structure.tools import initialize_structure_tool
 
 
 def main():
@@ -31,7 +31,7 @@ def main():
         verbose=True,
     )
 
-    chain(
+    result = chain.invoke(
         {
             "topic": "quantum computing",
             "context": (
@@ -40,6 +40,11 @@ def main():
             ),
         }
     )
+
+    print(result)
+    print(type(result))
+    print(result.__dict__)
+    print(dir(result))
 
 
 if __name__ == "__main__":
