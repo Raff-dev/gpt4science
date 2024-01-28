@@ -16,14 +16,16 @@ def main():
     llm = ChatOpenAI(api_key=OPENAI_API_KEY, model=GPT4_TURBO)
 
     title_chain = LLMChain(
-        llm=llm, prompt=research_paper_title_prompt, output_key="title"
+        llm=llm, prompt=research_paper_title_prompt, output_key="title", verbose=True
     )
 
     tools = [initialize_structure_tool]
     agent = create_openai_functions_agent(
         llm=llm, tools=tools, prompt=initialize_structure_prompt
     )
-    structure_executor_chain = AgentExecutor(agent=agent, verbose=True, tools=tools)
+    structure_executor_chain = AgentExecutor(
+        agent=agent, verbose=True, tools=tools, handle_parsing_errors=True
+    )
 
     chain = SequentialChain(
         chains=[title_chain, structure_executor_chain],
@@ -33,10 +35,10 @@ def main():
 
     result = chain.invoke(
         {
-            "topic": "quantum computing",
+            "topic": "creatine",
             "context": (
-                "Quantum computing is a field that applies the laws of quantum "
-                "mechanics to computational ability."
+                "strength training, muscle protein synthesis, hypertrophy, performance,"
+                "resistance training"
             ),
         }
     )

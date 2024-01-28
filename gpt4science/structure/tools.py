@@ -1,21 +1,28 @@
 from __future__ import annotations
 
+import os
 import pprint
 
 from langchain.tools import Tool
 
-from gpt4science.structure.models import InitializePaperArgs, Paper
+from gpt4science.settings import DATA_PATH
+from gpt4science.structure.schemas import InitializePaperStructureArgs, PaperStructure
 
 
-def create_table_of_contents(table_of_contents: Paper) -> None:
-    toc_json = table_of_contents.json()
+def create_paper_structure(paper_structure: PaperStructure) -> None:
+    toc_json = paper_structure.json()
     pprint.pprint(toc_json, indent=4)
+
+    data_path = os.path.join(DATA_PATH, paper_structure.title.lower().replace(" ", "_"))
+    with open(data_path, "w", encoding="utf-8") as file:
+        file.write(str(toc_json))
+
     return toc_json
 
 
 initialize_structure_tool = Tool.from_function(
-    name="create_table_of_contents",
-    description="Given topic, context, and paper title, create table of contents.",
-    func=create_table_of_contents,
-    args_schema=InitializePaperArgs,
+    name="create_paper_structure",
+    description="Given topic, context, and title, create table of contents.",
+    func=create_paper_structure,
+    args_schema=InitializePaperStructureArgs,
 )

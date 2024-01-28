@@ -58,6 +58,7 @@ initialize_structure_prompt = ChatPromptTemplate(
             content="""
             You're a research scientist.
             Based on the topic, context, and paper title, your job is to come up with chapters and subchapters as a general structure in the form of a table of contents.
+            Do not include conclusions, references, or acknowledgements.
             Use tools available to create the table of contents.
             """
         ),

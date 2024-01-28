@@ -18,7 +18,7 @@ from gpt4science.settings import (
     NUMBER_SEARCH_QUERIES,
     OPENAI_API_KEY,
 )
-from gpt4science.structure.models import Paper
+from gpt4science.structure.schemas import PaperStructure
 
 data_file = DATA_PATH / "test_paper.json"
 
@@ -30,7 +30,7 @@ def gather_google_scholar_sources(queries: list[str]) -> str:
 
 
 tools = [gather_google_scholar_sources]
-paper = Paper.parse_file(data_file)
+paper = PaperStructure.parse_file(data_file)
 llm = ChatOpenAI(api_key=OPENAI_API_KEY, model=GPT4_TURBO)
 
 
