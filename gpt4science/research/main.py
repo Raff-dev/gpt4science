@@ -35,11 +35,11 @@ llm = ChatOpenAI(api_key=OPENAI_API_KEY, model=GPT4_TURBO)
 
 
 PRE_RESEARCH_PROMPT = f"""
-    You're a prompt engineer tasked with creating search prompts for Google Scholar for research paper source gathering.
-    You need to create search queries that will return the most relevant results.
-    Use notation available in the Google Scholar search bar to create the most accurate search queries.
+You're a prompt engineer tasked with creating search prompts for Google Scholar for research paper source gathering.
+You need to create search queries that will return the most relevant results.
+Use notation available in the Google Scholar search bar to create the most accurate search queries.
 
-    number of queries: {NUMBER_SEARCH_QUERIES}
+number of queries: {NUMBER_SEARCH_QUERIES}
 """
 
 
@@ -70,13 +70,13 @@ def main():
         messages=[
             SystemMessage(content=PRE_RESEARCH_PROMPT),
             HumanMessagePromptTemplate.from_template(
-                """
-            Make sure the search terms are not too specific or too broad.
+                template="""
+                Make sure the search terms are not too specific or too broad.
 
-            title: {title}
-            chapter: {chapter}
-            sections: {sections}
-            """
+                title: {title}
+                chapter: {chapter}
+                sections: {sections}
+                """
             ),
             MessagesPlaceholder(variable_name="agent_scratchpad"),
         ],
