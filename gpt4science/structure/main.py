@@ -23,9 +23,7 @@ def main():
     agent = create_openai_functions_agent(
         llm=llm, tools=tools, prompt=initialize_structure_prompt
     )
-    structure_executor_chain = AgentExecutor(
-        agent=agent, verbose=True, tools=tools, handle_parsing_errors=True
-    )
+    structure_executor_chain = AgentExecutor(agent=agent, verbose=True, tools=tools)
 
     chain = SequentialChain(
         chains=[title_chain, structure_executor_chain],
@@ -33,7 +31,7 @@ def main():
         verbose=True,
     )
 
-    result = chain.invoke(
+    chain.invoke(
         {
             "topic": "creatine",
             "context": (
@@ -42,12 +40,7 @@ def main():
             ),
         }
     )
-
-    print(result)
-    print(type(result))
-    print(result.__dict__)
-    print(dir(result))
-
-
-if __name__ == "__main__":
-    main()
+    # title = (
+    #     "Enhancing Muscle Hypertrophy and Performance through Creatine"
+    #     "Supplementation: Implications for Resistance Training Regimens"
+    # )

@@ -29,11 +29,6 @@ def gather_google_scholar_sources(queries: list[str]) -> str:
     return "\n".join(queries)
 
 
-tools = [gather_google_scholar_sources]
-paper = PaperStructure.parse_file(data_file)
-llm = ChatOpenAI(api_key=OPENAI_API_KEY, model=GPT4_TURBO)
-
-
 PRE_RESEARCH_PROMPT = f"""
 You're a prompt engineer tasked with creating search prompts for Google Scholar for research paper source gathering.
 You need to create search queries that will return the most relevant results.
@@ -44,6 +39,10 @@ number of queries: {NUMBER_SEARCH_QUERIES}
 
 
 def gather_pre_research():
+    tools = [gather_google_scholar_sources]
+    paper = PaperStructure.parse_file(data_file)
+    llm = ChatOpenAI(api_key=OPENAI_API_KEY, model=GPT4_TURBO)
+
     prompt = PromptTemplate(
         template="""
         {pre_research_prompt}
@@ -66,6 +65,10 @@ def gather_pre_research():
 
 
 def main():
+    tools = [gather_google_scholar_sources]
+    paper = PaperStructure.parse_file(data_file)
+    llm = ChatOpenAI(api_key=OPENAI_API_KEY, model=GPT4_TURBO)
+
     prompt = ChatPromptTemplate(
         messages=[
             SystemMessage(content=PRE_RESEARCH_PROMPT),
@@ -87,14 +90,10 @@ def main():
     chain.batch(
         [
             {
-                "title": paper.title,
-                "chapter": chapter.title,
-                "sections": str([section.title for section in chapter.sections]),
+                "title": paper.paper_title,
+                "chapter": chapter.chapter_name,
+                "sections": str([section.section_name for section in chapter.sections]),
             }
             for chapter in paper.chapters
         ]
     )
-
-
-if __name__ == "__main__":
-    main()

@@ -1,19 +1,19 @@
 from pydantic.v1 import BaseModel
 
 
-class SubSection(BaseModel):
-    title: str
+class Section(BaseModel):
+    section_name: str
 
 
 class Chapter(BaseModel):
-    title: str
-    subsections: list[SubSection]
+    chapter_name: str
+    sections: list[Section]
 
 
 class PaperStructure(BaseModel):
+    paper_title: str
     topic: str
     context: str
-    title: str
     chapters: list[Chapter]
 
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import os
+import json
 import pprint
 
 from langchain.tools import Tool
@@ -13,9 +13,11 @@ def create_paper_structure(paper_structure: PaperStructure) -> None:
     toc_json = paper_structure.json()
     pprint.pprint(toc_json, indent=4)
 
-    data_path = os.path.join(DATA_PATH, paper_structure.title.lower().replace(" ", "_"))
-    with open(data_path, "w", encoding="utf-8") as file:
-        file.write(str(toc_json))
+    filename = paper_structure.paper_title.lower().replace(" ", "_") + ".json"
+    file_path = DATA_PATH / filename
+
+    with open(file_path, "w", encoding="utf-8") as file:
+        json.dump(toc_json, file)
 
     return toc_json
 

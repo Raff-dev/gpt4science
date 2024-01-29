@@ -53,15 +53,17 @@ research_paper_title_prompt = PromptTemplate(
 
 
 initialize_structure_prompt = ChatPromptTemplate(
+    input_variables=["topic", "context", "title"],
     messages=[
         SystemMessage(
             content="""
             You're a research scientist.
-            Based on the topic, context, and paper title, your job is to come up with chapters and subchapters as a general structure in the form of a table of contents.
-            Do not include conclusions, references, or acknowledgements.
+            Based on the topic, context, and paper title, your job is to come up with chapters and sections of the research paper.
+            Do not include introductions, conclusions, references, or acknowledgements.
             Use tools available to create the table of contents.
             """
         ),
+        MessagesPlaceholder(variable_name="agent_scratchpad"),
         HumanMessagePromptTemplate.from_template(
             """
             Topic: {topic}
@@ -69,6 +71,5 @@ initialize_structure_prompt = ChatPromptTemplate(
             Title: {title}
             """
         ),
-        MessagesPlaceholder(variable_name="agent_scratchpad"),
     ],
 )
